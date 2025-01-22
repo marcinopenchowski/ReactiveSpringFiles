@@ -9,9 +9,11 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
+FROM openjdk:23-jdk-slim
+
 WORKDIR /app
 
-COPY target/ReactiveSpringFiles-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY --from=builder target/ReactiveSpringFiles-0.0.1-SNAPSHOT.jar /app/app.jar
 
 EXPOSE 8080
 
