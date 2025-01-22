@@ -1,0 +1,6 @@
+CREATE TABLE files (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    digest VARCHAR(64) NOT NULL,
+    size BIGINT NOT NULL
+);

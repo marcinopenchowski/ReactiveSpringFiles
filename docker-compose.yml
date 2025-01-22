@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: filesdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ReactiveSpringFilesApp
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres-db:5432/filesdb
+      SPRING_R2DBC_USERNAME: test
+      SPRING_R2DBC_PASSWORD: test
+
+volumes:
+  postgres_data:
